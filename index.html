@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="300">
+<title>Epic Deals · QC &amp; Assessment Stats</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12151B; --panel:#1A1F27; --panel-2:#20262F;
+    --line:#2C333F; --line-soft:#242A33;
+    --text:#ECEEF1; --muted:#8B94A3; --muted-2:#5C6472;
+    --sal:#F5B429; --sal-dim:#8a6a1f;
+    --resa:#46C2A8; --resa-dim:#245c52;
+    --display:"Space Grotesk",system-ui,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:radial-gradient(1200px 600px at 80% -10%,#1b222c 0%,transparent 60%),var(--ink);
+    color:var(--text);font-family:var(--display);line-height:1.4;padding:clamp(16px,3vw,40px);min-height:100vh}
+  .wrap{max-width:1040px;margin:0 auto}
+  header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+  .brand{display:flex;flex-direction:column;gap:6px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--sal);font-weight:500}
+  h1{font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:-.01em}
+  .asof{font-family:var(--mono);font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--resa);box-shadow:0 0 0 3px rgba(70,194,168,.15)}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:12px;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+  .legend span{display:flex;align-items:center;gap:7px}
+  .sw{width:10px;height:10px;border-radius:3px}
+  .sw.sal{background:var(--sal)} .sw.resa{background:var(--resa)}
+  .legend b{color:var(--text);font-weight:500}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;margin-top:18px}
+  .tile{background:linear-gradient(180deg,var(--panel-2),var(--panel));border:1px solid var(--line);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden}
+  .tile::after{content:"";position:absolute;left:0;top:0;height:2px;width:100%;background:var(--bar,transparent);opacity:.6}
+  .tile.sal{--bar:linear-gradient(90deg,var(--sal),transparent 60%)}
+  .tile.resa{--bar:linear-gradient(90deg,var(--resa),transparent 60%)}
+  .tile .label{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+  .tile .num{font-family:var(--mono);font-weight:600;font-size:clamp(30px,4.6vw,42px);letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:6px;line-height:1}
+  .tile.sal .num{color:var(--sal)} .tile.resa .num{color:var(--resa)}
+  .tile .sub{font-size:12px;color:var(--muted);margin-top:8px}
+  .tile .sub b{color:var(--text);font-weight:500;font-family:var(--mono)}
+  .people{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  @media (max-width:760px){.people{grid-template-columns:1fr}}
+  .person{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .phead{display:flex;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--line-soft)}
+  .chip{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink);background:var(--text);letter-spacing:.02em}
+  .pname{font-size:16px;font-weight:600}
+  .paka{font-family:var(--mono);font-size:11px;color:var(--muted-2)}
+  .ptot{margin-left:auto;text-align:right}
+  .ptot .n{font-family:var(--mono);font-weight:600;font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
+  .ptot .k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+  .stream{display:grid;grid-template-columns:52px auto 1fr;gap:14px;align-items:center;padding:16px 0}
+  .stream + .stream{border-top:1px solid var(--line-soft)}
+  .pill{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;padding:4px 0;text-align:center;border-radius:6px;color:var(--ink)}
+  .stream.sal .pill{background:var(--sal)} .stream.resa .pill{background:var(--resa)}
+  .snums{display:flex;gap:16px;align-items:flex-end}
+  .snums .m{font-family:var(--mono);font-weight:600;font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
+  .snums .t{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .snums .t b{font-family:var(--mono);font-size:14px}
+  .stream.sal .snums .m,.stream.sal .snums .t b{color:var(--sal)}
+  .stream.resa .snums .m,.stream.resa .snums .t b{color:var(--resa)}
+  .snums .t.zero b{color:var(--muted-2)}
+  .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);display:block;margin-top:4px}
+  .bars{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;align-items:end;height:56px}
+  .col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%}
+  .bar{width:100%;max-width:26px;border-radius:4px 4px 1px 1px;height:0;opacity:.85}
+  .stream.sal .bar{background:linear-gradient(180deg,var(--sal),var(--sal-dim))}
+  .stream.resa .bar{background:linear-gradient(180deg,var(--resa),var(--resa-dim))}
+  .col.now .bar{opacity:1}
+  .cm{font-family:var(--mono);font-size:9px;letter-spacing:.04em;color:var(--muted-2);text-transform:uppercase}
+  .col.now .cm{color:var(--text)}
+  .note{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-left:2px solid var(--resa);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--muted);line-height:1.55}
+  .note b{color:var(--text);font-weight:500}
+  footer{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--muted-2)}
+  footer b{color:var(--muted);font-weight:400}
+  @media (prefers-reduced-motion:no-preference){.bar{transition:height .9s cubic-bezier(.22,1,.36,1)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <span class="eyebrow">Epic Deals · QC &amp; Assessment</span>
+      <h1>Assessments — SAL &amp; RESA</h1>
+    </div>
+    <div class="asof"><span class="dot"></span><span id="asof"></span></div>
+  </header>
+  <div class="legend">
+    <span><span class="sw sal"></span><b>SAL</b> — Internal Tracking 4.2 (repair &amp; resale)</span>
+    <span><span class="sw resa"></span><b>RESA</b> — RecommerceSA register (trade-in)</span>
+  </div>
+  <section class="tiles" id="tiles"></section>
+  <section class="people" id="people"></section>
+  <div class="note" id="note"></div>
+  <footer>
+    <span>Scope · <b>Anastasia Stolz (RESA: Stacy) &amp; Dwayne Preston Henning</b></span>
+    <span>Auto-updates · <b>every 5 min, Mon–Fri 08:00–17:00</b></span>
+  </footer>
+</div>
+<script>
+const DATA  = {"asOf": "28 Jul 2026 · 15:28", "months": ["Apr", "May", "Jun", "Jul"], "people": [{"name": "Anastasia Stolz", "aka": "RESA: Stacy", "sal": {"month": 116, "today": 2, "trend": [80, 101, 171, 116]}, "resa": {"month": 64, "today": 8, "trend": [0, 0, 0, 64]}}, {"name": "Dwayne Preston Henning", "aka": "RESA: Dwayne", "sal": {"month": 2, "today": 0, "trend": [0, 0, 0, 2]}, "resa": {"month": 247, "today": 13, "trend": [302, 282, 360, 247]}}]};
+const MONTHS = DATA.months;
+
+const sum = f => DATA.people.reduce((s,p)=>s+f(p),0);
+const salMonth = sum(p=>p.sal.month),  resaMonth = sum(p=>p.resa.month);
+const salToday = sum(p=>p.sal.today),  resaToday = sum(p=>p.resa.today);
+const totMonth = salMonth+resaMonth,   totToday = salToday+resaToday;
+const GMAX = Math.max(1, ...DATA.people.flatMap(p=>[...p.sal.trend,...p.resa.trend]));
+const initials = n => n.split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase();
+
+document.getElementById("asof").textContent = "As of " + DATA.asOf + " · SAST";
+
+const tiles = [
+  { cls:"", label:"This month", num:totMonth, sub:`SAL <b>${salMonth}</b> · RESA <b>${resaMonth}</b>` },
+  { cls:"", label:"Today", num:totToday, sub:`SAL <b>${salToday}</b> · RESA <b>${resaToday}</b>` },
+  { cls:"sal", label:"SAL this month", num:salMonth, sub:`Internal Tracking 4.2` },
+  { cls:"resa", label:"RESA this month", num:resaMonth, sub:`RecommerceSA register` },
+];
+document.getElementById("tiles").innerHTML = tiles.map(t=>`
+  <div class="tile ${t.cls}">
+    <div class="label">${t.label}</div>
+    <div class="num">${t.num}</div>
+    <div class="sub">${t.sub}</div>
+  </div>`).join("");
+
+const streamRow = (cls,label,s)=>`
+  <div class="stream ${cls}">
+    <div class="pill">${label}</div>
+    <div class="snums">
+      <div><span class="m">${s.month}</span><span class="k">This month</span></div>
+      <div><span class="t ${s.today===0?'zero':''}">today <b>${s.today}</b></span><span class="k">&nbsp;</span></div>
+    </div>
+    <div class="bars">
+      ${s.trend.map((n,i)=>`
+        <div class="col ${i===MONTHS.length-1?'now':''}">
+          <div class="bar" data-h="${(n/GMAX*100).toFixed(1)}"></div>
+          <div class="cm">${MONTHS[i]}</div>
+        </div>`).join("")}
+    </div>
+  </div>`;
+
+document.getElementById("people").innerHTML = DATA.people.map(p=>`
+  <div class="person">
+    <div class="phead">
+      <div class="chip">${initials(p.name)}</div>
+      <div><div class="pname">${p.name}</div><div class="paka">${p.aka}</div></div>
+      <div class="ptot"><div class="n">${p.sal.month+p.resa.month}</div><div class="k">Total / month</div></div>
+    </div>
+    ${streamRow("sal","SAL",p.sal)}
+    ${streamRow("resa","RESA",p.resa)}
+  </div>`).join("");
+
+document.getElementById("note").innerHTML =
+  `<b>Reading the split.</b> Most assessment volume runs through <b>RESA</b> ` +
+  `(${resaMonth} this month vs ${salMonth} on SAL). Dwayne works almost entirely on RESA ` +
+  `(${DATA.people[1].resa.month} this month; ${DATA.people[1].sal.month} on SAL). ` +
+  `Anastasia carries the SAL side. July bars are month-to-date.`;
+
+requestAnimationFrame(()=>requestAnimationFrame(()=>{
+  document.querySelectorAll(".bar").forEach(b=>b.style.height=b.dataset.h+"%");
+}));
+</script>
+</body>
+</html>
